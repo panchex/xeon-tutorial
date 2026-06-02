@@ -605,12 +605,21 @@
   }, { threshold: 0.1 });
   items.forEach(el => obs.observe(el));
 
-  // Contador de visitas con localStorage
-  const key = 'xeon_homelab_visits';
-  let visits = parseInt(localStorage.getItem(key) || '0') + 1;
-  localStorage.setItem(key, visits);
-  const displayVisits = visits + 847;
-  document.getElementById('visit-count').textContent = displayVisits.toLocaleString();
+  // Contador de visitas real con countapi.xyz
+  const counterKey = 'xeon-tutorial';
+  const counterEl = document.getElementById('visit-count');
+
+  fetch(`https://api.countapi.xyz/hit/panchex/${counterKey}`)
+    .then(r => r.json())
+    .then(data => {
+      counterEl.textContent = data.value.toLocaleString();
+    })
+    .catch(() => {
+      // Fallback: localStorage si la API falla
+      let visits = parseInt(localStorage.getItem('xeon_visits_fb') || '0') + 1;
+      localStorage.setItem('xeon_visits_fb', visits);
+      counterEl.textContent = (visits + 847).toLocaleString();
+    });
 
   // Lightbox: click any .tl-img img to open full size
   document.querySelectorAll('.tl-img img').forEach(img => {
