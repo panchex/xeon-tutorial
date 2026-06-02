@@ -618,7 +618,7 @@
       // Fallback: localStorage si la API falla
       let visits = parseInt(localStorage.getItem('xeon_visits_fb') || '0') + 1;
       localStorage.setItem('xeon_visits_fb', visits);
-      counterEl.textContent = (visits + 847).toLocaleString();
+      counterEl.textContent = visits.toLocaleString();
     });
 
   // Lightbox: click any .tl-img img to open full size
